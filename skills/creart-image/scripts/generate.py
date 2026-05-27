@@ -71,13 +71,16 @@ def generate(prompt: str, model: str, aspect_ratio: str, size: str, output: str)
         "model": model,
     }
 
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {api_key}",
+        # "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+    }
+
     req = urllib.request.Request(
         API_URL,
         data=json.dumps(body).encode("utf-8"),
-        headers={
-            "Content-Type": "application/json",
-            "Authorization": f"Bearer {api_key}",
-        },
+        headers=headers,
         method="POST",
     )
 
@@ -88,12 +91,21 @@ def generate(prompt: str, model: str, aspect_ratio: str, size: str, output: str)
         error_body = e.read().decode("utf-8", errors="replace")
         try:
             err = json.loads(error_body)
-            code = err.get("error", {}).get("code", "UNKNOWN")
-            msg = err.get("error", {}).get("message", error_body)
+            err_info = err.get("error", {})
+            code = err_info.get("code", "UNKNOWN")
+            msg = err_info.get("message", error_body)
+            details = err_info.get("details")
+            extra = ""
         except json.JSONDecodeError:
             code = f"HTTP_{e.code}"
-            msg = error_body
-        print(f"错误 [{code}]: {msg}", file=sys.stderr)
+            msg = error_body.strip()
+            details = None
+            server = e.headers.get("Server", "")
+            extra = f" [Server: {server}]" if server else ""
+        print(f"错误 [{code}]: {msg}{extra}", file=sys.stderr)
+        if details:
+            for d in details:
+                print(f"  -> {d.get('message', '')}", file=sys.stderr)
         sys.exit(1)
 
     image_data = None
