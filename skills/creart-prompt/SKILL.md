@@ -1,21 +1,20 @@
 ---
 name: creart-prompt
-description: 面向图像提示词撰写的聚焦型技能。Advisor-only 模式，退化为高质量 prompt 顾问。涵盖 17 大类、70+ 个结构化模板，覆盖海报 / UI / 产品 / 信息图 / 学术图 / 技术架构图 / 漫画 / 头像 / 流程板 / 电影分镜 / IP 周边等场景。
+description: 高质量图像提示词顾问技能（Advisor Only）。基于结构化模板为用户撰写可直接复用的高质量图像 prompt，涵盖 17 大类、89 个模板，覆盖海报 / UI / 产品 / 信息图 / 学术图 / 技术架构图 / 漫画 / 头像 / 流程板 / 电影分镜 / IP 周边等场景。
 ---
 
 # Creart Prompt
 
-这是一个面向图像提示词撰写的聚焦型技能。它退化为"高质量 prompt 撰写顾问"——
+这是一个面向图像提示词撰写的聚焦型技能。它只做一件事：**为用户生成可直接复用的高质量图像 prompt**。不假装出图成功，明确告知用户 prompt 已生成，请用自己的图像工具执行。
+
+## Advisor 定义
+
+本 Skill 是"高质量 prompt 撰写顾问"——
 
 1. 按"选模板 → 填字段 → 渲染最终 prompt"流程走，缺信息就问用户。
-2. 把最终 prompt **直接打印给用户** + 保存一份到 `creart-prompt/prompt/<task-slug>-<timestamp>.md`。
+2. 把最终 prompt **直接打印给用户** + 保存一份到 `skills/creart-prompt/prompt/<task-slug>-<timestamp>.md`。
 3. 附一句简短的"如何使用"建议（如：丢进 ChatGPT / Midjourney / DALL·E / Sora / Nano Banana / 自己后端 / 第三方 GPT Image 2 网关）。
 4. **不要假装出图成功**。明确告知用户："已生成可直接复用的高质量 prompt，请用你的图像工具执行。"
-
-本文件保留：技能结构、保存 / 命名规则、模板索引、Advisor 工作流。详细模板全部放在 `references/`，分层组织：
-
-- 一级：分类目录
-- 二级：单模板 Markdown 文件
 
 ## 用户输入工具
 
@@ -29,21 +28,21 @@ description: 面向图像提示词撰写的聚焦型技能。Advisor-only 模式
 
 - `references/`：分层结构化提示词模板
 
-## 默认输出目录
+## 输出目录
 
 如果用户没有明确指定输出路径，统一使用当前工作区下的：
 
-- 提示词目录：`creart-prompt/prompt/`
+- 提示词目录：`skills/creart-prompt/prompt/`
 
 如果目录不存在，在写 prompt 前手动 `mkdir -p`。
 
-## 默认命名规则
+## 命名规则
 
-如果用户没有明确指定文件名，应自动生成与当前任务相关的文件名，并追加当前时间戳，避免重名。
+如果用户没有明确指定文件名，自动生成与当前任务相关的文件名，并追加当前时间戳，避免重名。
 
 命名规则：
 
-- 提示词：`creart-prompt/prompt/<task-slug>-<timestamp>.md`
+- 提示词：`skills/creart-prompt/prompt/<task-slug>-<timestamp>.md`
 
 其中：
 
@@ -52,8 +51,8 @@ description: 面向图像提示词撰写的聚焦型技能。Advisor-only 模式
 
 示例：
 
-- `creart-prompt/prompt/live-commerce-ui-20260424-153045.md`
-- `creart-prompt/prompt/vr-headset-exploded-view-20260424-153102.md`
+- `skills/creart-prompt/prompt/live-commerce-ui-20260424-153045.md`
+- `skills/creart-prompt/prompt/vr-headset-exploded-view-20260424-153102.md`
 
 ## Prompt 保存规则
 
@@ -64,15 +63,13 @@ description: 面向图像提示词撰写的聚焦型技能。Advisor-only 模式
 通用规则：
 
 1. 如果用户显式给了 prompt 文件路径，可直接使用该文件作为输入。
-2. 如果用户直接给的是文本 prompt，也要先把最终 prompt 保存到 `creart-prompt/prompt/`。
+2. 如果用户直接给的是文本 prompt，也要先把最终 prompt 保存到 `skills/creart-prompt/prompt/`。
 3. 如果用户显式指定了 `--prompt-output`，则尊重用户指定路径。
 4. 否则使用默认命名规则自动保存。
 
 ## Advisor 用法
 
-没有命令行入口——本 Skill 是**提示词工程指南**：
-
-- 渲染好最终 prompt → 保存到 `creart-prompt/prompt/<task-slug>-<timestamp>.md` → 把内容直接展示给用户 → 提示用户在哪些图像工具中可以直接复用。
+渲染好最终 prompt → 保存到 `skills/creart-prompt/prompt/<task-slug>-<timestamp>.md` → 把内容直接展示给用户 → 提示用户在哪些图像工具中可以直接复用。
 
 ## JSON 模板工作方式
 
@@ -141,7 +138,7 @@ description: 面向图像提示词撰写的聚焦型技能。Advisor-only 模式
 
 ### 4. Maps (`references/maps/`)
 
-适合"地图类视觉"（信息图已抽离到独立分类 17）。当前已落地：
+适合"地图类视觉"。当前已落地：
 
 - `food-map.md` — 城市美食手绘地图（编号点位 + 图例 + 中心吉祥物）
 - `travel-route-map.md` — 旅行路线图（多日行程 / 单日 city walk / 户外路线）
@@ -301,16 +298,12 @@ CS / CV / ML 方向：
 
 直接进入 Advisor 工作流：
 
-1. 理解用户的图像需求。
-2. 识别它属于哪个分类目录（参考上方"模板索引"）。
-3. 只读取对应的具体模板文件，**不要一次读整个 references/**。
-4. 严格遵循模板格式：大部分模板用 JSON 主模板（结构化任务首选），少数模板（`infographics/hand-drawn-infographic.md`、`academic-figures/scientific-schematic.md` 等）使用「结构化自然语言 + 参数」混合形式，因为强行 JSON 会限制创作自由。
-5. 把用户输入映射到模板参数；关键信息不足时主动发起有针对性的澄清问题。
-
-到此 prompt 已渲染好：
-
-6. 把最终 prompt 保存到 `creart-prompt/prompt/<task-slug>-<timestamp>.md`，并把完整 prompt 在对话中展示给用户，附一句简短的"如何使用 / 推荐工具"建议。
-7. 任务结束后用一句话告诉用户：prompt 落在哪。
+1. 识别任务属于哪个分类目录（参考上方"模板索引"）。
+2. 只读取对应的具体模板文件，**不要一次读整个 references/**。
+3. 严格遵循模板格式：大部分模板用 JSON 主模板（结构化任务首选），少数模板（`infographics/hand-drawn-infographic.md`、`academic-figures/scientific-schematic.md` 等）使用「结构化自然语言 + 参数」混合形式，因为强行 JSON 会限制创作自由。
+4. 把用户输入映射到模板参数；关键信息不足时主动发起有针对性的澄清问题。
+5. 把最终 prompt 保存到 `skills/creart-prompt/prompt/<task-slug>-<timestamp>.md`，并把完整 prompt 在对话中展示给用户，附一句简短的"如何使用 / 推荐工具"建议。
+6. 任务结束后用一句话告诉用户：prompt 落在哪。
 
 ## 重要约束
 
