@@ -74,7 +74,7 @@ def generate(prompt: str, model: str, aspect_ratio: str, size: str, output: str)
     headers = {
         "Content-Type": "application/json",
         "Authorization": f"Bearer {api_key}",
-        # "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
     }
 
     req = urllib.request.Request(
