@@ -10,7 +10,7 @@
 
 ## 模板覆盖
 
-17 个分类目录 + 1 份方法论总文档，共 94 个模板文件：
+16 个分类目录 + 1 份方法论总文档，共 89 个模板文件：
 
 | 分类 | 目录 | 典型场景 |
 |------|------|----------|
@@ -22,7 +22,6 @@
 | 海报 & Campaign | `poster-and-campaigns/` | 品牌海报、Campaign KV、banner、杂志封面 |
 | 人物肖像 | `portraits-and-characters/` | 商务肖像、创始人媒体片、虚拟主播、角色设定稿 |
 | 场景插画 | `scenes-and-illustrations/` | 治愈场景、概念大场景、绘本、极简氛围图 |
-| 编辑工作流 | `editing-workflows/` | 背景替换、局部替换、去杂物、产品精修、人像编辑 |
 | 头像 & 人设 | `avatars-and-profile/` | 风格迁移自拍、网格肖像、3D 图标、贴纸套装 |
 | 分镜 & 序列 | `storyboards-and-sequences/` | 四格漫画、漫画分镜、TVC 分镜、电影叙事分镜 |
 | 网格 & 拼贴 | `grids-and-collages/` | banner 套装、lookbook、多风格拼贴、pitch board |
@@ -36,17 +35,19 @@
 ## 目录结构
 
 ```
-creart-prompt/
-├── creart-prompt/
-│   ├── SKILL.md              # 技能定义（工作流 + 模板索引 + 约束）
-│   └── references/           # 结构化提示词模板（17 类 + 94 个文件）
-│       ├── prompt-writing.md
-│       ├── ui-mockups/
-│       ├── product-visuals/
-│       ├── maps/
-│       └── ...
+creart-skill/
+├── skills/
+│   └── creart-prompt/
+│       ├── SKILL.md              # 技能定义（工作流 + 模板索引 + 约束）
+│       └── references/           # 结构化提示词模板（16 类 + 89 个文件）
+│           ├── prompt-writing.md
+│           ├── ui-mockups/
+│           ├── product-visuals/
+│           ├── maps/
+│           └── ...
 ├── scripts/
-│   └── diff-references.sh    # upstream references 同步 & 安全扫描脚本
+│   ├── diff-references.sh    # upstream references 同步 & 安全扫描脚本
+│   └── sync-filter.txt       # references 同步过滤规则（排除不适用分类）
 ├── garden-replicate.md       # 从 upstream 复刻/增量更新的标准流程
 └── .garden-sync.json         # upstream 同步状态跟踪
 ```
@@ -64,8 +65,8 @@ creart-prompt/
 
 ```bash
 # Dry-run 检查
-bash scripts/diff-references.sh --dry-run "$UPSTREAM_ROOT/skills/gpt-image-2/references" "creart-prompt/references"
+bash scripts/diff-references.sh --dry-run "$UPSTREAM_ROOT/skills/gpt-image-2/references" "skills/creart-prompt/references"
 
 # 实际同步
-bash scripts/diff-references.sh "$UPSTREAM_ROOT/skills/gpt-image-2/references" "creart-prompt/references"
+bash scripts/diff-references.sh "$UPSTREAM_ROOT/skills/gpt-image-2/references" "skills/creart-prompt/references"
 ```
