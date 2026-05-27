@@ -5,6 +5,7 @@
 | 技能 | 路径 | 定位 |
 |------|------|------|
 | **creart-prompt** | `skills/creart-prompt/` | 高质量图像提示词顾问（Advisor Only），只写 prompt 不出图。复刻自 `@conardli/garden-skills` → `skills/gpt-image-2`，复刻规则见 `garden-replicate.md` |
+| **creart-image** | `skills/creart-image/` | 调用 Creart AI API 生成图像。支持多种模型和分辨率，直接出图 |
 
 ## 目录结构
 
